@@ -1,0 +1,11 @@
+{"level":"info","message":"Hello distributed log files!","service":"user-service"}
+{"level":"info","message":"helelo","service":"user-service"}
+2024-04-28T12:27:28.089Z [right meow!] info: helelo
+2024-04-28T12:38:15.135Z [right meow!] info: hiii
+2024-04-28T12:38:33.443Z [right meow!] error: hiii
+2024-04-28T12:38:52.676Z [right meow!] error: hiii
+2024-04-28T12:46:58.222Z [right meow!] error: hiii
+2024-04-28T12:47:24.520Z [right meow!] error: hiii
+2024-04-28T12:48:17.752Z [right meow!] error: hiii
+2024-04-28T12:51:09.176Z [right meow!] error: hiii
+2024-04-28T12:52:26.643Z [right meow!] error: hiii
