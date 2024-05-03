@@ -4,10 +4,10 @@ dotenv.config();
 const express = require("express");
 
 const app = express();
-const db = require("./setup/db");
+const db = require("./db");
 const port = process.env.port;
 const fs = require("fs");
-const logger = require("./winster.logger").logger;
+const logger = require("../winster.logger").logger;
 const path = require("path");
 const { Sequelize } = require("sequelize");
 
@@ -20,17 +20,17 @@ if (fs.existsSync(logFilePath)) {
 
 const logStream = fs.createWriteStream(logFilePath, { flags: "a" });
 
-// console.log = function (data) {
-//   logStream.write(data + "\n");
-// };
+console.log = function (data) {
+  logStream.write(data + "\n");
+};
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-// db.seq.options.logging = function (query) {
-//   console.log(`[SQL Query] ${query}`);
-// };
+db.seq.options.logging = function (query) {
+  console.log(`[SQL Query] ${query}`);
+};
 
 db.seq.sync().then(
   async (success) => {
