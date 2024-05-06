@@ -4,6 +4,7 @@ dotenv.config();
 const express = require("express");
 
 const app = express();
+const bodyParser = require("body-parser");
 const db = require("./db");
 const port = process.env.port;
 const fs = require("fs");
@@ -18,10 +19,13 @@ if (fs.existsSync(logFilePath)) {
   fs.unlinkSync(logFilePath);
 }
 
+app.use(bodyParser.json({ limit: "50mb", extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+
 const logStream = fs.createWriteStream(logFilePath, { flags: "a" });
 
-console.log = function (data) {
-  logStream.write(data + "\n");
+console.log = function (...args) {
+  logStream.write(args.map((arg) => JSON.stringify(arg)).join(" ") + "\n");
 };
 
 app.get("/", (req, res) => {
@@ -31,6 +35,8 @@ app.get("/", (req, res) => {
 db.seq.options.logging = function (query) {
   console.log(`[SQL Query] ${query}`);
 };
+
+app.use("/auth", require("./routes/user.router"));
 
 db.seq.sync().then(
   async (success) => {

@@ -1,10 +1,12 @@
-[SQL Query] Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'Users' AND TABLE_SCHEMA = 'dummy_db'
-[SQL Query] Executing (default): SHOW INDEX FROM `Users`
-[SQL Query] Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'Friends' AND TABLE_SCHEMA = 'dummy_db'
-[SQL Query] Executing (default): SHOW INDEX FROM `Friends`
-[SQL Query] Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'Chats' AND TABLE_SCHEMA = 'dummy_db'
-[SQL Query] Executing (default): SHOW INDEX FROM `Chats`
-[SQL Query] Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'Messages' AND TABLE_SCHEMA = 'dummy_db'
-[SQL Query] Executing (default): SHOW INDEX FROM `Messages`
-Example app listening on port 3000
-hii
+"[SQL Query] Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'Users' AND TABLE_SCHEMA = 'dummy_db'"
+"[SQL Query] Executing (default): SHOW INDEX FROM `Users`"
+"[SQL Query] Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'Friends' AND TABLE_SCHEMA = 'dummy_db'"
+"[SQL Query] Executing (default): SHOW INDEX FROM `Friends`"
+"[SQL Query] Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'Chats' AND TABLE_SCHEMA = 'dummy_db'"
+"[SQL Query] Executing (default): SHOW INDEX FROM `Chats`"
+"[SQL Query] Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'Messages' AND TABLE_SCHEMA = 'dummy_db'"
+"[SQL Query] Executing (default): SHOW INDEX FROM `Messages`"
+"Example app listening on port 3000"
+"hii"
+"[SQL Query] Executing (default): SELECT `id`, `name`, `email`, `email` AS `mobile`, `password`, `createdBy`, `updatedBy`, `createdAt`, `updatedAt` FROM `Users` AS `User` WHERE `User`.`password` = '123456' AND `User`.`email` = 'ashina@gmail.com';"
+1 "auth"
