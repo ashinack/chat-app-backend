@@ -36,6 +36,11 @@ db.seq.options.logging = function (query) {
   console.log(`[SQL Query] ${query}`);
 };
 
+app.use(function (req, res, next) {
+  req["db"] = db;
+  next();
+});
+
 app.use("/auth", require("./routes/user.router"));
 
 db.seq.sync().then(

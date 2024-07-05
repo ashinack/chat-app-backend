@@ -1,13 +1,11 @@
-const bcrypt = require("bcrypt");
-const { where } = require("sequelize");
-const { log } = require("winston");
 const db = require("../db");
-const { password } = require("../db.config");
+const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 const login = async (req, res) => {
   const { username, password } = req.body;
   const hashedPassword = await hashPassword(password);
+  console.log(hashedPassword, "hashedPassword");
   if (username == null || password == null) {
     return res
       .status(400)
@@ -16,7 +14,7 @@ const login = async (req, res) => {
   try {
     let auth = await db.User.findAll({
       where: {
-        password: password,
+        password: hashedPassword,
         email: username,
       },
       raw: true,

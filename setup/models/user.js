@@ -20,7 +20,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     mobile: {
       type: Sequelize.BIGINT(10),
-      field: "email",
+      field: "mobile",
       allowNull: false,
       unique: true,
     },
