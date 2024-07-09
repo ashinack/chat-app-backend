@@ -1,26 +1,22 @@
-const db = require("../db");
 const bcrypt = require("bcrypt");
-const saltRounds = 10;
 
 const login = async (req, res) => {
   const { username, password } = req.body;
-  const hashedPassword = await hashPassword(password);
-  console.log(hashedPassword, "hashedPassword");
   if (username == null || password == null) {
     return res
       .status(400)
       .json({ error: "Username or password cannot be null" });
   }
   try {
-    let auth = await db.User.findAll({
+    let auth = await req.db.User.findAll({
       where: {
-        password: hashedPassword,
         email: username,
       },
       raw: true,
     });
-    console.log(auth.length, "auth");
-    if (auth.length != 0) {
+    const storedHashedPassword = auth[0].password;
+    const passwordMatch = await bcrypt.compare(password, storedHashedPassword);
+    if (auth.length != 0 && passwordMatch) {
       return res.status(200).json({ message: "Login successful", auth });
     } else {
       // Handle login failure
@@ -29,19 +25,9 @@ const login = async (req, res) => {
         .json({ message: "Login failed. Invalid credentials." });
     }
   } catch (error) {
-    console.log(error);
+    console.log(error, "error");
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-async function hashPassword(password) {
-  try {
-    // Generate salt and hash password
-    const hash = await bcrypt.hash(password, saltRounds);
-    return hash;
-  } catch (error) {
-    throw error;
-  }
-}
 
 module.exports = { login };

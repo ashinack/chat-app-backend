@@ -8,5 +8,3 @@
 "[SQL Query] Executing (default): SHOW INDEX FROM `Messages`"
 "Example app listening on port 3000"
 "hii"
-"$2b$10$2dhMeb8Y.sgN/Lf563jrKO7ushcCo9e6PEHs8.xnwExl9sKJs5hXW" "password1"
-{"name":"SequelizeValidationError","errors":[{"message":"password cannot be an array or an object","type":"string violation","path":"password","value":{},"origin":"CORE","instance":{"id":null,"name":"ashina","password":{},"email":"akshay@gmail.com","mobile":8790987898,"updatedAt":"2024-07-05T16:57:22.279Z","createdAt":"2024-07-05T16:57:22.279Z"},"validatorKey":"not_a_string","validatorName":null,"validatorArgs":[]}]}
