@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 
 const login = async (req, res) => {
   const { username, password } = req.body;
+  console.log(req.body, "ppp");
   if (username == null || password == null) {
     return res
       .status(400)

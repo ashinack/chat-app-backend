@@ -22,6 +22,13 @@ const { Sequelize } = require("sequelize");
 app.use(bodyParser.json({ limit: "50mb", extended: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
 
+const myLogger = function (req, res, next) {
+  console.log("LOGGED");
+  next();
+};
+
+app.use(myLogger);
+
 // const logStream = fs.createWriteStream(logFilePath, { flags: "a" });
 
 // console.log = function (...args) {
@@ -29,6 +36,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // };
 
 app.get("/", (req, res) => {
+  console.log("hello!!!");
   res.send("Hello World!");
 });
 

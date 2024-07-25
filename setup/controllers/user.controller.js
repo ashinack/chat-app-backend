@@ -1,8 +1,10 @@
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const accessHooks = require("../db.hooks");
 
 const addUser = async (req, res) => {
   const { name, username, password, mobile } = req.body;
+
   //   const hashedPassword = await hashPassword(password);
   if (username == null || password == null) {
     return res
@@ -15,11 +17,13 @@ const addUser = async (req, res) => {
     console.log(password1, "password1");
     let data = await req.db.User.create({
       name: name,
-      password: bcrypt.hash(password, salt),
+      password: password1,
       email: username,
       mobile: mobile,
     });
     console.log(data.length, "data");
+    data = data.get({ plain: true });
+    // accessHooks.accessHooks(req.db, data);
     if (data.length != 0) {
       return res
         .status(200)
