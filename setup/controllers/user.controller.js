@@ -21,7 +21,6 @@ const addUser = async (req, res) => {
       email: username,
       mobile: mobile,
     });
-    console.log(data.length, "data");
     data = data.get({ plain: true });
     // accessHooks.accessHooks(req.db, data);
     if (data.length != 0) {

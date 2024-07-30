@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
 
 const login = async (req, res) => {
   const { username, password } = req.body;
@@ -18,6 +19,7 @@ const login = async (req, res) => {
     const storedHashedPassword = auth[0].password;
     const passwordMatch = await bcrypt.compare(password, storedHashedPassword);
     if (auth.length != 0 && passwordMatch) {
+      sendMailToUsers(auth[0]);
       return res.status(200).json({ message: "Login successful", auth });
     } else {
       // Handle login failure
