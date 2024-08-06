@@ -5,5 +5,7 @@ const user = require("../controllers/user.controller");
 
 router.post("/login", login.login);
 router.post("/addUser", user.addUser);
+router.post("/verifyOtp", user.verifyOtp);
+router.post("/clearCo", user.clearOtp);
 
 module.exports = router;

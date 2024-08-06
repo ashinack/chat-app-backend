@@ -10,6 +10,7 @@ const port = process.env.port;
 const fs = require("fs");
 const logger = require("../winster.logger").logger;
 const path = require("path");
+const cookieParser = require("cookie-parser");
 const { Sequelize } = require("sequelize");
 
 // const logFilePath = path.join(__dirname, "logs.txt");
@@ -21,6 +22,7 @@ const { Sequelize } = require("sequelize");
 
 app.use(bodyParser.json({ limit: "50mb", extended: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 const myLogger = function (req, res, next) {
   console.log("LOGGED");
@@ -44,12 +46,27 @@ app.get("/", (req, res) => {
 //   console.log(`[SQL Query] ${query}`);
 // };
 
+// Set a cookie
+// app.get("/set-cookie", (req, res) => {
+//   res.cookie("username", "chetan_patil", { maxAge: 900000, httpOnly: true });
+//   res.send("Cookie set");
+// });
+
+// // Read a cookie
+// app.get("/get-cookie", (req, res) => {
+//   const username = req.cookies.username;
+//   console.log(username, "username");
+
+//   res.send(`Username: ${username}`);
+// });
+
 app.use(function (req, res, next) {
   req["db"] = db;
   next();
 });
 
 app.use("/auth", require("./routes/user.router"));
+app.use("/cookie", require("./routes/cookie.router"));
 
 db.seq.sync().then(
   async (success) => {

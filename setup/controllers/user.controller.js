@@ -1,28 +1,59 @@
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const accessHooks = require("../db.hooks");
+const generateOTP = require("../utils/otp.generator");
+const { sendMailToUsers } = require("../utils/nodemailer");
 
 const addUser = async (req, res) => {
-  const { name, username, password, mobile } = req.body;
+  const { name, email, password, mobile } = req.body;
+  if (email == null || password == null) {
+    return res.status(400).json({ error: "email or password cannot be null" });
+  }
+  try {
+    const salt = await bcrypt.genSalt(10);
+    let password1 = await bcrypt.hash(password, salt);
+    const queries = {
+      name: name,
+      email: email,
+      password: password1,
+      mobile: mobile,
+    };
+    const otp = generateOTP();
+    sendMailToUsers(queries, otp);
+    res.cookie("otpGenerated", otp, { maxAge: 900000, httpOnly: true });
+    // res.cookie("username", otp, { maxAge: 900000, httpOnly: true });
+    res.cookie("usert", queries, { maxAge: 3600000, httpOnly: true });
+    // console.log("otp", otp, "queries", queries);
+    res.send(`Username: ${otp}`);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
-  //   const hashedPassword = await hashPassword(password);
-  if (username == null || password == null) {
+const verifyOtp = async (req, res) => {
+  const { otp } = req.body;
+  const storedOtp = req.cookies.otp1;
+  const userDt = req.cookies.usert;
+  let otpGenerated = req.cookies.otpGenerated;
+
+  if (otp == null) {
     return res
       .status(400)
       .json({ error: "Username or password cannot be null" });
   }
   try {
-    const salt = await bcrypt.genSalt(10);
-    let password1 = await bcrypt.hash(password, salt);
-    console.log(password1, "password1");
-    let data = await req.db.User.create({
-      name: name,
-      password: password1,
-      email: username,
-      mobile: mobile,
-    });
-    data = data.get({ plain: true });
-    // accessHooks.accessHooks(req.db, data);
+    let data = [];
+
+    // const username = req.cookies.username;
+    // console.log(username, "storedOt;name");
+    console.log(otpGenerated, "storedOt;");
+    console.log(userDt, "storedOt;");
+    if (otp == otpGenerated) {
+      data = await req.db.User.create(userDt);
+      data = data.get({ plain: true });
+    }
+
     if (data.length != 0) {
       return res
         .status(200)
@@ -49,4 +80,11 @@ async function hashPassword(password) {
   }
 }
 
-module.exports = { addUser };
+const clearOtp = (req, res) => {
+  res.clearCookie("otp1");
+  res.clearCookie("username");
+  res.clearCookie("otpGenerated");
+  res.send("OTP cookie cleared");
+};
+
+module.exports = { addUser, verifyOtp, clearOtp };
