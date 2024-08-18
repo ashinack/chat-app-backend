@@ -4,6 +4,14 @@ const accessHooks = require("../db.hooks");
 const generateOTP = require("../utils/otp.generator");
 const { sendMailToUsers } = require("../utils/nodemailer");
 
+// const isInDevelopment = process.env.NODE_ENV === "development";
+const cookieConfigs = {
+  httpOnly: true,
+  sameSite: false,
+  secure: false,
+  maxAge: 365 * 24 * 60 * 60 * 1000, // one year
+};
+
 const addUser = async (req, res) => {
   const { name, email, password, mobile } = req.body;
   if (email == null || password == null) {
@@ -20,11 +28,9 @@ const addUser = async (req, res) => {
     };
     const otp = generateOTP();
     sendMailToUsers(queries, otp);
-    res.cookie("otpGenerated", otp, { maxAge: 900000, httpOnly: true });
-    // res.cookie("username", otp, { maxAge: 900000, httpOnly: true });
-    res.cookie("usert", queries, { maxAge: 3600000, httpOnly: true });
-    // console.log("otp", otp, "queries", queries);
-    res.send(`Username: ${otp}`);
+    res.cookie("otpGenerated", otp, cookieConfigs);
+    res.cookie("usert", queries, cookieConfigs);
+    res.send({ otp: otp });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -36,6 +42,7 @@ const verifyOtp = async (req, res) => {
   const storedOtp = req.cookies.otp1;
   const userDt = req.cookies.usert;
   let otpGenerated = req.cookies.otpGenerated;
+  console.log(req.cookies, "otp");
 
   if (otp == null) {
     return res

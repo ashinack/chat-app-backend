@@ -12,6 +12,7 @@ const logger = require("../winster.logger").logger;
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const { Sequelize } = require("sequelize");
+const cors = require("cors");
 
 // const logFilePath = path.join(__dirname, "logs.txt");
 
@@ -24,10 +25,25 @@ app.use(bodyParser.json({ limit: "50mb", extended: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+const corsOptions = {
+  origin: "http://localhost:4200", //(https://your-client-app.com)
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
 const myLogger = function (req, res, next) {
   console.log("LOGGED");
   next();
 };
+
+app.use((_, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:4200");
+  res.header("Access-Control-Allow-Headers", "*");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
 
 app.use(myLogger);
 
