@@ -28,8 +28,8 @@ const addUser = async (req, res) => {
     };
     const otp = generateOTP();
     sendMailToUsers(queries, otp);
-    res.cookie("otpGenerated", otp, cookieConfigs);
-    res.cookie("usert", queries, cookieConfigs);
+    res.cookie("otpGenerated", otp, { secure: true, sameSite: "Lax" });
+    res.cookie("usert", queries, { secure: true, sameSite: "Lax" });
     res.send({ otp: otp });
   } catch (error) {
     console.log(error);
